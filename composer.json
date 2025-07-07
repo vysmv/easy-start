@@ -1,8 +1,18 @@
 {
     "name": "vysmv/easy-start",
-    "description": "The package allows you to install frequently used elements for a quick start on a typical Laravel web application",
-    "type": "package",
+    "description": "Quickly set up a Laravel development environment with Docker (nginx, php-fpm, mysql, redis, minio).",
+    "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Suhomlinov Vitaliy",
+            "email": "scriptcraft.site@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^11.0 || ^12.0"
+    },
     "autoload": {
         "psr-4": {
             "Vysmv\\EasyStart\\": "src/"
@@ -15,11 +25,6 @@
             ]
         }
     },
-    "authors": [
-        {
-            "name": "Suhomlinov Vitaliy"
-        }
-    ],
     "minimum-stability": "dev",
-    "require": {}
+    "prefer-stable": true
 }

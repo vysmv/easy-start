@@ -1,39 +1,82 @@
-https://www.markdownguide.org/basic-syntax/
-# Easy Start Документация. 
+# Easy Start 
 
-Easy Start - пакет позволяющий вам произвести рывок на старте разработки вашего приложения.
 
-## Содержание
-- [Начало работы](#начало-работы)
-  - [Установка](#установка)
-  - [Конфигурация](#конфигурация)
-- [API](#api)
-- [Примеры](#примеры)
+1. Подключить новый пакет "vysmv/easy-start": "*"
+"require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.31",
+        "laravel/tinker": "^2.9",
+        "vysmv/easy-start": "*"
+    }
 
----
+2. Добавить путь к пакету в композере приложения
+"repositories":[
+        {
+            "type": "path",
+            "url": "packages/vysmv/easy-start",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
 
-## Начало работы
-Зачем мне это? Данный пакет предназначен для того, чтобы облегчить первые шаги в разработке типичного приложения которому может понадобиться админская панель,
-аутентификация, широко используемые сущности по типу post, caterory, tag или основные поля предоставляющие возможность устанавливать значения для seo.  
-Вы можете установить пакет и активировать все сервисы с дефолтными настройками. Дя этого достаточно ввести команду, в корне вашего проекта: 
+3. Установить в композере приложения
+    "minimum-stability": "dev",
 
-```php
-php artisan easy-start:install
-```
+4.  composer update
 
-Первым делом система опублиукет конфигурационный файл приложения в директорию /config.
-Далее выполнит миграции для создания сервисной таблицы "es_options" обеспечивающей нужды пакета.
-После чего спросит у вас - "Хотите установить все сервисы пакета в стандартной конфигурации?". Если вы хотите конфигурировать параметры пакета, 
-то просто отвечайте "no" на все следующие вопросы. К установке сервисов вы можете вернуться позже, после конфигурации пакета под свои нужды.  
 
-### Установка
-...
 
-### Конфигурация
-...
+Command
+php artisan easy-start:install - первичная настройка пакета
+    php artisan easy-start:show-config - отобразить текущие значения в конфиге
 
-## API
-...
+php artisan easy-start:install-admin - установка функционала админки и аутентификации
+php artisan easy-start:install-docker - добавить в проект файлы реализубщие запуск в докер
+php artisan easy-start:install-entity -
+php artisan easy-start:install-code-sniffer - установка code_sniffer
 
-## Примеры
-...
+composer dump-autoload
+composer update
+
+
+https://laravel.su/docs/11.x/packages#vvedenie
+
+
+тест докера
+1. http://127.0.0.1:8080/
+2. docker ps - 5 сервисов up
+3. минио - http://localhost:9001/login
+4. редис
+<?php
+// Подключение к Redis
+$redis = new Redis();
+$redis->connect('redis', 6379); // Имя сервиса в docker-compose
+
+// Запись тестового ключа
+$redis->set("test_key", "Hello, Redis!");
+
+// Чтение тестового ключа
+$value = $redis->get("test_key");
+
+echo "Полученное значение из Redis: " . $value;
+?>
+
+5. редис расширение docker exec -it easy-start-php-fpm-1 php -m | grep redis
+6. очереди:
+
+php artisan make:job TestJob
+
+file_put_contents(base_path() . '/test.txt', time(), FILE_APPEND);
+sleep(10);
+
+php artisan make:controller TestController
+
+use App\Jobs\TestJob;
+class TestController extends Controller
+{
+    public function index()
+    {
+        dispatch(new TestJob());
+    }
+}
